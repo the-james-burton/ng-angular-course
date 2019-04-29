@@ -1,34 +1,55 @@
 import { Component } from '@angular/core';
 
+interface Passenger {
+  id: number;
+  fullname: string;
+  checkedIn: boolean;
+}
+
 @Component({
   selector: 'app-root',
   styleUrls: ['app.component.scss'],
   template: `
-    <!-- event binding -->
-    <div class='app'>
-      <input
-        type='text'
-        [value]='name'
-        (input)='handleChange($event.target.value)'>
-
-      <!-- different from course: ng-template not template -->
-      <ng-template [ngIf]='name.length > 2'>
-        <div>
-          Searching for... {{ name }}
-        </div>
+    <div class="app">
+    <h3>Airline Passengers</h3>
+    <ul>
+      <!-- different from course: ng-template instead of template -->
+      <ng-template ngFor let-passenger let-i='index' [ngForOf]='passengers'>
+        <li>
+          {{ i }}: {{ passenger.fullname }}
+        </li>
       </ng-template>
-
-      <div *ngIf='name.length > 2'>
-        searching for... {{ name }}
-      </div>
-    </div>
+    </ul>
+    <h3>Airline Passengers</h3>
+    <ul>
+      <li *ngFor='let passenger of passengers; let i = index;'>
+        {{ i }}: {{ passenger.fullname }}
+      </li>
+    </ul>
+</div>
   `
 })
+
 export class AppComponent {
-  name: string = 'abc';
-
-  handleChange(value: string) {
-    this.name = value;
-  }
-
+  passengers: Passenger[] = [{
+    id: 1,
+    fullname: 'John',
+    checkedIn: true
+  }, {
+    id: 2,
+    fullname: 'Julie',
+    checkedIn: false
+  }, {
+    id: 3,
+    fullname: 'James',
+    checkedIn: true
+  }, {
+    id: 4,
+    fullname: 'Joseph',
+    checkedIn: true
+  }, {
+    id: 5,
+    fullname: 'Josie',
+    checkedIn: false
+}];
 }
