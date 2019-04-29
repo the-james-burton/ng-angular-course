@@ -6,16 +6,10 @@ import { Component } from '@angular/core';
   template: `
     <!-- event binding -->
     <div class='app'>
-      <button (click)='handleClick()'>
-        change name
+      <button (click)='handleClick(username.value)'>
+        get value
       </button>
-      <input
-        type='text'
-        [ngModel]='name'
-        (ngModelChange)='handleChange($event)' />
-        <input
-        type='text'
-        [(ngModel)]='name' />
+      <input type='text' #username>
       <div>{{ name }}</div>
     </div>
   `
@@ -23,12 +17,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   name: string = 'abc';
 
-  handleClick() {
-    this.name = 'xyz';
-  }
-
-  handleChange(value: string) {
-    this.name = value;
+  handleClick(value: string) {
+    console.log(value);
   }
 
 }
