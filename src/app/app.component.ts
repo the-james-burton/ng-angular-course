@@ -6,19 +6,29 @@ import { Component } from '@angular/core';
   template: `
     <!-- event binding -->
     <div class='app'>
-      <button (click)='handleClick(username.value)'>
-        get value
-      </button>
-      <input type='text' #username>
-      <div>{{ name }}</div>
+      <input
+        type='text'
+        [value]='name'
+        (input)='handleChange($event.target.value)'>
+
+      <!-- different from course: ng-template not template -->
+      <ng-template [ngIf]='name.length > 2'>
+        <div>
+          Searching for... {{ name }}
+        </div>
+      </ng-template>
+
+      <div *ngIf='name.length > 2'>
+        searching for... {{ name }}
+      </div>
     </div>
   `
 })
 export class AppComponent {
   name: string = 'abc';
 
-  handleClick(value: string) {
-    console.log(value);
+  handleChange(value: string) {
+    this.name = value;
   }
 
 }
