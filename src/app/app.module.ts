@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PassengerDashboardModule } from './passenger-dashboard/passenger-dashboard.modules';
+import { PassengerDashboardModule } from './passenger-dashboard/passenger-dashboard.module';
 
 import { AppComponent } from './app.component';
 
