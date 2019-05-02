@@ -60,10 +60,21 @@ export class PassengerDashboardComponent implements OnInit {
       }
     ];
   }
-  handleRemove(event) {
+  handleRemove(event: Passenger) {
     console.log('remove: ', event);
+    // used a lambda instead...
+    this.passengers = this.passengers.filter(
+      passenger => passenger.id !== event.id
+    );
   }
-  handleEdit(event) {
-    console.log('edit: ' , event);
+  handleEdit(event: Passenger) {
+    console.log('edit: ', event);
+    // used a lambda instead...
+    this.passengers = this.passengers.map(passenger =>
+      passenger.id === event.id
+        ? Object.assign({}, passenger, event)
+        : passenger
+    );
+    console.log('passengers: ', this.passengers);
   }
 }
