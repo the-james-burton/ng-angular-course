@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { PassengerDashboardService } from '../../passenger-dashboard.service';
+
 import { Passenger } from '../../models/passenger.interface';
 
 @Component({
@@ -9,7 +11,7 @@ import { Passenger } from '../../models/passenger.interface';
     <div>
       <passenger-count [items]="passengers"> </passenger-count>
       <!-- this will update because javascript passes by reference... -->
-      <div *ngFor="let passenger of passengers;">
+      <div *ngFor="let passenger of passengers">
         {{ passenger.fullname }}
       </div>
       <passenger-detail
@@ -24,46 +26,14 @@ import { Passenger } from '../../models/passenger.interface';
 })
 export class PassengerDashboardComponent implements OnInit {
   passengers: Passenger[];
-  constructor() {}
+  // automated dependency injection...
+  constructor(private passengerService: PassengerDashboardService) {}
+
   ngOnInit(): void {
-    this.passengers = [
-      {
-        id: 1,
-        fullname: 'John',
-        checkedIn: true,
-        checkInDate: 1490742000000,
-        children: null
-      },
-      {
-        id: 2,
-        fullname: 'Julie',
-        checkedIn: false,
-        checkInDate: null,
-        children: [{ name: 'Alan', age: 12 }, { name: 'Alex', age: 7 }]
-      },
-      {
-        id: 3,
-        fullname: 'James',
-        checkedIn: true,
-        checkInDate: 1491606000000,
-        children: null
-      },
-      {
-        id: 4,
-        fullname: 'Joseph',
-        checkedIn: true,
-        checkInDate: 1488412800000,
-        children: [{ name: 'Amy', age: 1 }]
-      },
-      {
-        id: 5,
-        fullname: 'Josie',
-        checkedIn: false,
-        checkInDate: null,
-        children: null
-      }
-    ];
+    // synchronous call...
+    this.passengers = this.passengerService.getPassengers();
   }
+
   handleRemove(event: Passenger) {
     console.log('remove: ', event);
     // used a lambda instead...
