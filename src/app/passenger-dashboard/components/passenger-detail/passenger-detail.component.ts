@@ -1,5 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges
+} from '@angular/core';
 import { Passenger } from '../../models/passenger.interface';
+import { reference } from '@angular/core/src/render3';
 
 @Component({
   selector: 'passenger-detail',
@@ -40,7 +49,7 @@ import { Passenger } from '../../models/passenger.interface';
     </div>
   `
 })
-export class PassengerDetailComponent {
+export class PassengerDetailComponent implements OnChanges, OnInit {
   @Input()
   detail: Passenger;
 
@@ -54,9 +63,24 @@ export class PassengerDetailComponent {
 
   constructor() {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    // this will create a clone of the data and reassign it to this class
+    // which prevents the data from being changed via the reference...
+    // it is only called during initialzation
+    if (changes.detail) {
+      this.detail = Object.assign({}, changes.detail.currentValue);
+    }
+    console.log('ngOnChanges');
+  }
+
+  ngOnInit(): void {
+    console.log('ngOnInit');
+  }
+
   onNameChange(value: string) {
     this.detail.fullname = value;
   }
+
   toggleEdit() {
     if (this.editing) {
       this.edit.emit(this.detail);
