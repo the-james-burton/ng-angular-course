@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+  // different from course - HttpClient instead of Http...
+  import { HttpClientModule } from '@angular/common/http';
+
 // smart components...
 import { PassengerDashboardComponent } from './containers/passenger-dashboard/passenger-dashboard.component';
 
@@ -17,7 +20,7 @@ import { PassengerDashboardService } from './passenger-dashboard.service';
     PassengerCountComponent,
     PassengerDetailComponent
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule ],
   exports: [PassengerDashboardComponent],
   providers: [PassengerDashboardService]
 })
