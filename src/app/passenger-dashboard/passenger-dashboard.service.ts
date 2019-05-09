@@ -1,6 +1,10 @@
 import { Passenger } from './models/passenger.interface';
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+const PASSENGER_API: string = 'http://localhost:3000/api/passengers';
 
 @Injectable()
 export class PassengerDashboardService {
@@ -9,43 +13,10 @@ export class PassengerDashboardService {
     console.log(this);
   }
 
-  getPassengers(): Passenger[] {
-    return [
-      {
-        id: 1,
-        fullname: 'John',
-        checkedIn: true,
-        checkInDate: 1490742000000,
-        children: null
-      },
-      {
-        id: 2,
-        fullname: 'Julie',
-        checkedIn: false,
-        checkInDate: null,
-        children: [{ name: 'Alan', age: 12 }, { name: 'Alex', age: 7 }]
-      },
-      {
-        id: 3,
-        fullname: 'James',
-        checkedIn: true,
-        checkInDate: 1491606000000,
-        children: null
-      },
-      {
-        id: 4,
-        fullname: 'Joseph',
-        checkedIn: true,
-        checkInDate: 1488412800000,
-        children: [{ name: 'Amy', age: 1 }]
-      },
-      {
-        id: 5,
-        fullname: 'Josie',
-        checkedIn: false,
-        checkInDate: null,
-        children: null
-      }
-    ];
+  getPassengers(): Observable<Passenger[]> {
+    // different from course - don't use the .map() operator...
+    return this.http
+       .get<Passenger[]>(PASSENGER_API);
   }
+
 }
