@@ -32,8 +32,8 @@ export class PassengerDashboardComponent implements OnInit {
   ngOnInit(): void {
     // synchronous call...
     this.passengerService
-      .getPassengers()
-      .subscribe((data: Passenger[]) => {
+      .getPassengersAsPromise()
+      .then((data: Passenger[]) => {
         console.log('data:', data);
         this.passengers = data;
       });

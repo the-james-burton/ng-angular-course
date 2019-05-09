@@ -19,6 +19,13 @@ export class PassengerDashboardService {
        .get<Passenger[]>(PASSENGER_API);
   }
 
+  getPassengersAsPromise(): Promise<Passenger[]> {
+    // different from course - don't use the .map() operator...
+    return this.http
+       .get<Passenger[]>(PASSENGER_API)
+       .toPromise();
+  }
+
   updatePassenger(passenger: Passenger): Observable<Passenger> {
     // different from course - RequestOptions no longer exists...
     const httpHeaders = new HttpHeaders({
