@@ -1,5 +1,5 @@
 import { Passenger } from './models/passenger.interface';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,9 +20,13 @@ export class PassengerDashboardService {
   }
 
   updatePassenger(passenger: Passenger): Observable<Passenger> {
+    // different from course - RequestOptions no longer exists...
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
     // different from course - don't use the .map() operator...
     return this.http
-       .put<Passenger>(`${PASSENGER_API}/${passenger.id}`, passenger);
+       .put<Passenger>(`${PASSENGER_API}/${passenger.id}`, passenger, { headers: httpHeaders });
   }
 
   removePassenger(passenger: Passenger): Observable<Passenger> {
