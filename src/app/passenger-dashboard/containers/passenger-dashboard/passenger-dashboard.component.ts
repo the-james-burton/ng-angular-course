@@ -40,20 +40,29 @@ export class PassengerDashboardComponent implements OnInit {
   }
 
   handleRemove(event: Passenger) {
+    this.passengerService
+      .removePassenger(event)
+      .subscribe((data: Passenger) =>
+        this.passengers = this.passengers.filter(
+          passenger => passenger.id !== event.id
+        ));
     console.log('remove: ', event);
-    // used a lambda instead...
-    this.passengers = this.passengers.filter(
-      passenger => passenger.id !== event.id
-    );
   }
+
   handleEdit(event: Passenger) {
     console.log('edit: ', event);
-    // used a lambda instead...
-    this.passengers = this.passengers.map(passenger =>
-      passenger.id === event.id
-        ? Object.assign({}, passenger, event)
-        : passenger
-    );
+    this.passengerService
+      .updatePassenger(event)
+      // different to course - doing (data: Passenger) causes error
+      .subscribe(data => {
+        this.passengers = this.passengers.map(passenger => {
+          if (passenger.id === event.id) {
+            passenger = Object.assign({}, passenger, event);
+          }
+          return passenger;
+        });
+      });
     console.log('passengers: ', this.passengers);
   }
+
 }

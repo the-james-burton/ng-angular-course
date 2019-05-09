@@ -19,4 +19,16 @@ export class PassengerDashboardService {
        .get<Passenger[]>(PASSENGER_API);
   }
 
+  updatePassenger(passenger: Passenger): Observable<Passenger> {
+    // different from course - don't use the .map() operator...
+    return this.http
+       .put<Passenger>(`${PASSENGER_API}/${passenger.id}`, passenger);
+  }
+
+  removePassenger(passenger: Passenger): Observable<Passenger> {
+    // different from course - don't use the .map() operator...
+    return this.http
+       .delete<Passenger>(`${PASSENGER_API}/${passenger.id}`);
+  }
+
 }
