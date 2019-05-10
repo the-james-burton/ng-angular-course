@@ -36,10 +36,6 @@ import { reference } from '@angular/core/src/render3';
             : 'Not checked in'
         }}
       </div>
-      <div class="children">
-        <!-- this is the safe navigation -->
-        Children: {{ detail.children?.length || 0 }}
-      </div>
       <button (click)="toggleEdit()">
         {{ editing ? 'done' : 'edit' }}
       </button>
