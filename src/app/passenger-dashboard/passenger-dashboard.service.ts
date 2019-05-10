@@ -28,6 +28,12 @@ export class PassengerDashboardService {
     return this.http.get<Passenger[]>(PASSENGER_API).toPromise();
   }
 
+  getPassenger(id: number): Observable<Passenger> {
+    return this.http
+    .get<Passenger>(`${PASSENGER_API}/${id}`)
+    .pipe(catchError((error: any) => throwError(error.json())));
+  }
+
   updatePassenger(passenger: Passenger): Observable<Passenger> {
     // different from course - RequestOptions no longer exists...
     const httpHeaders = new HttpHeaders({
