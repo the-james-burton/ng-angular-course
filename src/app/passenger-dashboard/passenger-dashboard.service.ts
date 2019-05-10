@@ -1,8 +1,8 @@
 import { Passenger } from './models/passenger.interface';
 import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 const PASSENGER_API: string = 'http://localhost:3000/api/passengers';
 
@@ -15,15 +15,17 @@ export class PassengerDashboardService {
 
   getPassengers(): Observable<Passenger[]> {
     // different from course - don't use the .map() operator...
-    return this.http
-       .get<Passenger[]>(PASSENGER_API);
+    return (
+      this.http
+        .get<Passenger[]>(PASSENGER_API)
+        // difference from course - uses pipe and throwError instead...
+        .pipe(catchError((error: any) => throwError(error.json())))
+    );
   }
 
   getPassengersAsPromise(): Promise<Passenger[]> {
     // different from course - don't use the .map() operator...
-    return this.http
-       .get<Passenger[]>(PASSENGER_API)
-       .toPromise();
+    return this.http.get<Passenger[]>(PASSENGER_API).toPromise();
   }
 
   updatePassenger(passenger: Passenger): Observable<Passenger> {
@@ -32,14 +34,15 @@ export class PassengerDashboardService {
       'Content-Type': 'application/json'
     });
     // different from course - don't use the .map() operator...
-    return this.http
-       .put<Passenger>(`${PASSENGER_API}/${passenger.id}`, passenger, { headers: httpHeaders });
+    return this.http.put<Passenger>(
+      `${PASSENGER_API}/${passenger.id}`,
+      passenger,
+      { headers: httpHeaders }
+    );
   }
 
   removePassenger(passenger: Passenger): Observable<Passenger> {
     // different from course - don't use the .map() operator...
-    return this.http
-       .delete<Passenger>(`${PASSENGER_API}/${passenger.id}`);
+    return this.http.delete<Passenger>(`${PASSENGER_API}/${passenger.id}`);
   }
-
 }

@@ -32,11 +32,11 @@ export class PassengerDashboardComponent implements OnInit {
   ngOnInit(): void {
     // synchronous call...
     this.passengerService
-      .getPassengersAsPromise()
-      .then((data: Passenger[]) => {
+      .getPassengers()
+      .subscribe((data: Passenger[]) => {
         console.log('data:', data);
         this.passengers = data;
-      });
+      }, (error: any) => console.log('error: ', error));
   }
 
   handleRemove(event: Passenger) {
