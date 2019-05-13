@@ -11,11 +11,31 @@ import { Baggage } from '../../models/baggage.interface';
       {{ detail | json }}
       <div>
         Passenger name:
-        <input type="text" name="fullname" [ngModel]="detail?.fullname" />
+        <input
+          type="text"
+          name="fullname"
+          required
+          #fullname="ngModel"
+          [ngModel]="detail?.fullname"
+        />
+        <!-- different from course - also required a ? before errors to avoid vs validation error -->
+        <div *ngIf="fullname?.errors?.required && fullname.dirty" class="error">
+          Passenger name is required
+        </div>
       </div>
       <div>
         Passenger id:
-        <input type="number" name="id" [ngModel]="detail?.id" />
+        <input
+          type="number"
+          name="id"
+          required
+          #id="ngModel"
+          [ngModel]="detail?.id"
+        />
+        <!-- different from course - also required a ? before errors to avoid vs validation error -->
+        <div *ngIf="id?.errors?.required && id.dirty" class="error">
+          Passenger id is required
+        </div>
       </div>
 
       <div>
@@ -40,50 +60,45 @@ import { Baggage } from '../../models/baggage.interface';
 
       <div>
         Luggage:
-        <select
-          name="baggage"
-          [ngModel]="detail?.baggage">
+        <select name="baggage" [ngModel]="detail?.baggage">
           <option
             *ngFor="let item of baggage"
             [value]="item.key"
-            [selected]="item.key === detail?.baggage">
-            {{ item.value }}
-          </option>
-        </select>
-        <!-- pure angular version where [ngModel] replaces value and selected... -->
-        <select
-          name="baggage"
-          [ngModel]="detail?.baggage">
-          <option
-            *ngFor="let item of baggage"
-            [ngValue]="item.key">
+            [selected]="item.key === detail?.baggage"
+          >
             {{ item.value }}
           </option>
         </select>
       </div>
 
-      {{ form.value | json }}
+      <div>{{ form.value | json }}</div>
+      <div>valid: {{ form.valid | json }}</div>
+      <div>invalid: {{ form.invalid | json }}</div>
     </form>
   `
 })
 export class PassengerFormComponent {
-
   @Input()
   detail: Passenger;
 
-  baggage: Baggage[] = [{
-    key: 'none',
-    value: 'No baggage'
-  },{
-    key: 'hand-only',
-    value: 'Hand baggage'
-  },{
-    key: 'hold-only',
-    value: 'Hold baggage'
-  },{
-    key: 'hand-hold',
-    value: 'Hand and hold baggage'
-  }];
+  baggage: Baggage[] = [
+    {
+      key: 'none',
+      value: 'No baggage'
+    },
+    {
+      key: 'hand-only',
+      value: 'Hand baggage'
+    },
+    {
+      key: 'hold-only',
+      value: 'Hold baggage'
+    },
+    {
+      key: 'hand-hold',
+      value: 'Hand and hold baggage'
+    }
+  ];
 
   toggleCheckIn(checkedIn: boolean) {
     if (checkedIn) {
