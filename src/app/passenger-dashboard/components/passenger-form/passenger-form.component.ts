@@ -71,6 +71,8 @@ import { Baggage } from '../../models/baggage.interface';
         </select>
       </div>
 
+      <!-- note that this does not appear to change the style
+          of the button but does add the 'disabled' attribute as expected -->
       <button type="submit" [disabled]="form.invalid">
         Update Passenger
       </button>
