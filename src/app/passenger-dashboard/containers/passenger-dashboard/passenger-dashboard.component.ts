@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { PassengerDashboardService } from '../../passenger-dashboard.service';
 
@@ -17,6 +18,7 @@ import { Passenger } from '../../models/passenger.interface';
       <passenger-detail
         *ngFor="let passenger of passengers"
         [detail]="passenger"
+        (view)="handleView($event)"
         (edit)="handleEdit($event)"
         (remove)="handleRemove($event)"
       >
@@ -27,25 +29,31 @@ import { Passenger } from '../../models/passenger.interface';
 export class PassengerDashboardComponent implements OnInit {
   passengers: Passenger[];
   // automated dependency injection...
-  constructor(private passengerService: PassengerDashboardService) {}
+  constructor(
+    private router: Router,
+    private passengerService: PassengerDashboardService
+  ) {}
 
   ngOnInit(): void {
     // synchronous call...
-    this.passengerService
-      .getPassengers()
-      .subscribe((data: Passenger[]) => {
+    this.passengerService.getPassengers().subscribe(
+      (data: Passenger[]) => {
         console.log('data:', data);
         this.passengers = data;
-      }, (error: any) => console.log('error: ', error));
+      },
+      (error: any) => console.log('error: ', error)
+    );
   }
 
   handleRemove(event: Passenger) {
     this.passengerService
       .removePassenger(event)
-      .subscribe((data: Passenger) =>
-        this.passengers = this.passengers.filter(
-          passenger => passenger.id !== event.id
-        ));
+      .subscribe(
+        (data: Passenger) =>
+          (this.passengers = this.passengers.filter(
+            passenger => passenger.id !== event.id
+          ))
+      );
     console.log('remove: ', event);
   }
 
@@ -65,4 +73,7 @@ export class PassengerDashboardComponent implements OnInit {
     console.log('passengers: ', this.passengers);
   }
 
+  handleView(event: Passenger) {
+    this.router.navigate(['/passengers', event.id]);
+  }
 }
