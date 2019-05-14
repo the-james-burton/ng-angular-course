@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { PassengerDashboardService } from '../../passenger-dashboard.service';
 import { PassengerFormComponent } from '../../components/passenger-form/passenger-form.component';
 import { Passenger } from '../../models/passenger.interface';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'passenger-viewer',
@@ -16,11 +18,16 @@ import { Passenger } from '../../models/passenger.interface';
 })
 export class PassengerViewerComponent implements OnInit {
   passenger: Passenger;
-  constructor(private passengerService: PassengerDashboardService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private passengerService: PassengerDashboardService
+  ) {}
   ngOnInit(): void {
-    this.passengerService
-      .getPassenger(1)
-      .subscribe((data: Passenger) => (this.passenger = data));
+    // different to course - need to use pipe...
+    this.route.params.pipe(
+      switchMap((data: Passenger) => this.passengerService.getPassenger(data.id)),
+      ).subscribe((data: Passenger) => this.passenger = data);
   }
 
   onUpdatePassenger(event: Passenger) {

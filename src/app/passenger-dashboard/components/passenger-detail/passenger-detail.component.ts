@@ -8,7 +8,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Passenger } from '../../models/passenger.interface';
-import { reference } from '@angular/core/src/render3';
 
 @Component({
   selector: 'passenger-detail',
